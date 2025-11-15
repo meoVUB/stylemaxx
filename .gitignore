@@ -1,0 +1,37 @@
+# ---- Python ----
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# ---- Django ----
+staticfiles/
+media/
+*.log
+
+# ---- Environment ----
+.env
+.env.local
+.env.*
+*.env
+
+# ---- macOS ----
+.DS_Store
+
+# ---- Windows ----
+Thumbs.db
+
+# ---- Node / Tailwind (if added later) ----
+node_modules/
+package-lock.json
+yarn.lock
+
+# ---- Vercel ----
+.vercel/
+
+# ---- Other ----
+*.bak
+*.swp
