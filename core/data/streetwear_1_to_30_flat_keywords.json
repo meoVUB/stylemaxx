@@ -1,0 +1,514 @@
+[
+  {
+    "id": "streetwear_1",
+    "image": "streetwear_1.jpg",
+    "keywords": [
+      "baggy",
+      "belt",
+      "boots",
+      "dark",
+      "denim",
+      "jeans",
+      "leopard",
+      "shirt",
+      "t",
+      "tan",
+      "white",
+      "work"
+    ]
+  },
+  {
+    "id": "streetwear_2",
+    "image": "streetwear_2.jpg",
+    "keywords": [
+      "black",
+      "brown",
+      "button",
+      "leg",
+      "plaid",
+      "shirt",
+      "shoes",
+      "trousers",
+      "up",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_3",
+    "image": "streetwear_3.jpg",
+    "keywords": [
+      "black",
+      "dark",
+      "grey",
+      "jeans",
+      "leg",
+      "loafers",
+      "long",
+      "over",
+      "shirt",
+      "short",
+      "sleeve",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_4",
+    "image": "streetwear_4.jpg",
+    "keywords": [
+      "black",
+      "grey",
+      "henley",
+      "jeans",
+      "oversized",
+      "shoes",
+      "textured"
+    ]
+  },
+  {
+    "id": "streetwear_5",
+    "image": "streetwear_5.jpg",
+    "keywords": [
+      "baggy",
+      "belt",
+      "black",
+      "boots",
+      "bracelet",
+      "buckle",
+      "chain",
+      "jeans",
+      "shirt",
+      "silver",
+      "t",
+      "tan",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_6",
+    "image": "streetwear_6.jpg",
+    "keywords": [
+      "baggy",
+      "beanie",
+      "black",
+      "dark",
+      "jeans",
+      "navy",
+      "oversized",
+      "sandals",
+      "shirt",
+      "slide",
+      "t"
+    ]
+  },
+  {
+    "id": "streetwear_7",
+    "image": "streetwear_7.jpg",
+    "keywords": [
+      "black",
+      "boots",
+      "graphic",
+      "hoodie",
+      "sweatpants",
+      "tan"
+    ]
+  },
+  {
+    "id": "streetwear_8",
+    "image": "streetwear_8.jpg",
+    "keywords": [
+      "graphic",
+      "hoodie",
+      "navy",
+      "sneakers",
+      "sweatpants",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_9",
+    "image": "streetwear_9.jpg",
+    "keywords": [
+      "baggy",
+      "black",
+      "denim",
+      "jacket",
+      "jeans",
+      "loafers",
+      "tank",
+      "top",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_10",
+    "image": "streetwear_10.jpg",
+    "keywords": [
+      "black",
+      "dark",
+      "denim",
+      "jeans",
+      "long",
+      "navy",
+      "polo",
+      "shoes",
+      "sleeve"
+    ]
+  },
+  {
+    "id": "streetwear_11",
+    "image": "streetwear_11.jpg",
+    "keywords": [
+      "baggy",
+      "black",
+      "jacket",
+      "jeans",
+      "leather",
+      "loafers",
+      "navy",
+      "shirt",
+      "t",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_12",
+    "image": "streetwear_12.jpg",
+    "keywords": [
+      "black",
+      "blue",
+      "dark",
+      "henley",
+      "jeans",
+      "long",
+      "navy",
+      "shoes",
+      "sleeve",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_13",
+    "image": "streetwear_13.jpg",
+    "keywords": [
+      "beanie",
+      "black",
+      "blue",
+      "dark",
+      "jeans",
+      "navy",
+      "oversized",
+      "shirt",
+      "short",
+      "sleeve",
+      "slides",
+      "t"
+    ]
+  },
+  {
+    "id": "streetwear_14",
+    "image": "streetwear_14.jpg",
+    "keywords": [
+      "black",
+      "boots",
+      "hoodie",
+      "oversized",
+      "print",
+      "sweatpants",
+      "tan",
+      "white",
+      "with"
+    ]
+  },
+  {
+    "id": "streetwear_15",
+    "image": "streetwear_15.jpg",
+    "keywords": [
+      "hoodie",
+      "logo",
+      "navy",
+      "sneakers",
+      "sweatpants",
+      "white",
+      "with",
+      "yellow"
+    ]
+  },
+  {
+    "id": "streetwear_16",
+    "image": "streetwear_16.jpg",
+    "keywords": [
+      "black",
+      "denim",
+      "jacket",
+      "jeans",
+      "leather",
+      "loafers",
+      "tank",
+      "top",
+      "white",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_17",
+    "image": "streetwear_17.jpg",
+    "keywords": [
+      "black",
+      "blue",
+      "bootcut",
+      "dark",
+      "dress",
+      "henley",
+      "jeans",
+      "navy",
+      "shoes",
+      "sweater"
+    ]
+  },
+  {
+    "id": "streetwear_18",
+    "image": "streetwear_18.jpg",
+    "keywords": [
+      "blue",
+      "cardigan",
+      "cream",
+      "dark",
+      "jeans",
+      "oversized",
+      "shirt",
+      "sneakers",
+      "t",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_19",
+    "image": "streetwear_19.jpg",
+    "keywords": [
+      "and",
+      "black",
+      "hoodie",
+      "oversized",
+      "sneakers",
+      "sweatpants",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_20",
+    "image": "streetwear_20.jpg",
+    "keywords": [
+      "black",
+      "blue",
+      "dark",
+      "grey",
+      "jeans",
+      "leather",
+      "long",
+      "shirt",
+      "shoes",
+      "sleeve",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_21",
+    "image": "streetwear_21.jpg",
+    "keywords": [
+      "accessories",
+      "blue",
+      "fitted",
+      "jeans",
+      "light",
+      "minimal",
+      "rolled",
+      "shirt",
+      "silver",
+      "sleeves",
+      "straight",
+      "t",
+      "white",
+      "wristwatch"
+    ]
+  },
+  {
+    "id": "streetwear_22",
+    "image": "streetwear_22.jpg",
+    "keywords": [
+      "blue",
+      "casual",
+      "detail",
+      "fit",
+      "graphic",
+      "jeans",
+      "printed",
+      "relaxed",
+      "shirt",
+      "sunglasses",
+      "t",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_23",
+    "image": "streetwear_23.jpg",
+    "keywords": [
+      "black",
+      "chain",
+      "fit",
+      "gold",
+      "henley",
+      "leg",
+      "long",
+      "minimalist",
+      "necklace",
+      "sleek",
+      "sleeve",
+      "trousers",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_24",
+    "image": "streetwear_24.jpg",
+    "keywords": [
+      "baggy",
+      "beanie",
+      "black",
+      "blue",
+      "boots",
+      "dark",
+      "hoodie",
+      "jeans",
+      "light",
+      "shirt",
+      "style",
+      "t",
+      "timberland",
+      "zip"
+    ]
+  },
+  {
+    "id": "streetwear_25",
+    "image": "streetwear_25.jpg",
+    "keywords": [
+      "baggy",
+      "black",
+      "boots",
+      "casual",
+      "hoodie",
+      "jeans",
+      "monochrome",
+      "oversized",
+      "palette",
+      "streetwear",
+      "tan",
+      "washed",
+      "work"
+    ]
+  },
+  {
+    "id": "streetwear_26",
+    "image": "streetwear_26.jpg",
+    "keywords": [
+      "beanie",
+      "black",
+      "blue",
+      "extra",
+      "jacket",
+      "look",
+      "pants",
+      "plaid",
+      "puffer",
+      "sneakers",
+      "subway",
+      "tonal",
+      "urban",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_27",
+    "image": "streetwear_27.jpg",
+    "keywords": [
+      "belt",
+      "black",
+      "blue",
+      "bomber",
+      "burberry",
+      "chunky",
+      "dark",
+      "jacket",
+      "jeans",
+      "leather",
+      "plaid",
+      "rings",
+      "scarf",
+      "tan",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_28",
+    "image": "streetwear_28.jpg",
+    "keywords": [
+      "accessory",
+      "adidas",
+      "belt",
+      "black",
+      "chunky",
+      "contrast",
+      "grey",
+      "jeans",
+      "leather",
+      "shirt",
+      "shoes",
+      "stitching",
+      "striped",
+      "t",
+      "wide"
+    ]
+  },
+  {
+    "id": "streetwear_29",
+    "image": "streetwear_29.jpg",
+    "keywords": [
+      "and",
+      "baggy",
+      "belt",
+      "black",
+      "brown",
+      "dark",
+      "jeans",
+      "leather",
+      "loafers",
+      "rugby",
+      "shirt",
+      "stripes",
+      "white"
+    ]
+  },
+  {
+    "id": "streetwear_30",
+    "image": "streetwear_30.jpg",
+    "keywords": [
+      "belt",
+      "chains",
+      "distressed",
+      "gold",
+      "graphic",
+      "green",
+      "jeans",
+      "leather",
+      "long",
+      "red",
+      "shirt",
+      "silver",
+      "sleeve",
+      "striped",
+      "studded",
+      "white",
+      "wristwatch"
+    ]
+  }
+]
