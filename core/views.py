@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from pathlib import Path
 import json
@@ -20,6 +20,25 @@ def load_outfits():
         _OUTFITS_CACHE = outfits
     return _OUTFITS_CACHE
 
+# ========= Preference helpers =========
+def get_preferences(session):
+    """Return preferences dict from session, with default structure."""
+    prefs = session.get("preferences")
+    if not prefs:
+        prefs = {"keywords": {}}
+    return prefs
+
+def save_preferences(session, prefs):
+    session["preferences"] = prefs
+    session.modified = True
+
+def update_preferences_with_outfit(prefs, outfit):
+    """Increment keyword counts based on outfit keywords."""
+    kw_counts = prefs.setdefault("keywords", {})
+    for kw in outfit.get("keywords", []):
+        kw_counts[kw] = kw_counts.get(kw, 0) + 1
+    return prefs
+
 # ======= Production Views (= Parsa Styling) ========
 def mystore_view(request):
     return render(request, 'core/mystore.html')
@@ -36,10 +55,52 @@ def mystore_view_dev(request):
 
 def swipe_view_dev(request):
     outfits = load_outfits()
-    # UNFINISHED!
-    outfit = outfits[0]
+    total = len(outfits)
+
+    # current index from session, default 0
+    idx = request.session.get("current_outfit_index", 0)
+
+    # Handle POST like/dislike
+    if request.method == "POST":
+        action = request.POST.get("action")
+        prefs = get_preferences(request.session)
+
+        # Apply preference update only if there is a current outfit
+        if 0 <= idx < total:
+            current_outfit = outfits[idx]
+            if action == "like":
+                prefs = update_preferences_with_outfit(prefs, current_outfit)
+                save_preferences(request.session, prefs)
+
+        # Move to next outfit
+        idx += 1
+        request.session["current_outfit_index"] = idx
+        request.session.modified = True
+
+        # Redirect to avoid form resubmission on refresh
+        return redirect("swipe_dev")
+
+    # GET request: decide which outfit to show
+    if 0 <= idx < total:
+        outfit = outfits[idx]
+        done = False
+    else:
+        outfit = None
+        done = True
+
+    prefs = get_preferences(request.session)
+    top_keywords = sorted(
+        prefs["keywords"].items(),
+        key=lambda x: x[1],
+        reverse=True
+    )[:10]
+
     context = {
         "outfit": outfit,
+        "done": done,
+        "index": idx,
+        "total": total,
+        "top_keywords": top_keywords,
     }
     return render(request, 'sandbox/swipe_logic.html', context)
 
