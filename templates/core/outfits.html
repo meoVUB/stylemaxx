@@ -1,15 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1 class="text-2xl font-semibold mb-4">Outfits</h1>
-  <p class="text-slate-400 mb-6">
-    Let our AI stylist build full outfits for you based on your swipes.
-  </p>
-  <!-- Friend: nice button + layout for generated outfit -->
-  <button class="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400">
-    Generate Outfit
-  </button>
+<div class="text-center mb-6">
+  <h1 class="text-2xl font-semibold mb-2 text-[#272323]">Outfits</h1>
+</div>
 
-  <div class="mt-6 border border-dashed border-slate-700 rounded-xl p-6 text-sm text-slate-500">
-    TODO: Generated outfit items & prices.
+<!-- Apple-style Tabs -->
+<div class="mt-8 flex justify-center">
+  <div class="inline-flex items-center bg-[#C29D9D] border border-[#A88D8D] rounded-full p-1 shadow-inner">
+    <a href="{% url 'swipe' %}"
+       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+       {% if request.resolver_match.url_name == 'swipe' %}
+         bg-[#D4BABA] text-[#2E1E1E] 
+       {% else %}
+         text-[#2E1E1E] hover:bg-[#d1b9b9] 
+       {% endif %}">
+      Swipe
+    </a>
+    <a href="{% url 'outfits' %}"
+       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+       {% if request.resolver_match.url_name == 'outfits' %}
+         bg-[#D4BABA] text-[#2E1E1E] 
+       {% else %}
+         text-[#2E1E1E] hover:bg-[#d1b9b9] 
+       {% endif %}">
+      Outfits
+    </a>
+    <a href="{% url 'mystore' %}"
+       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+       {% if request.resolver_match.url_name == 'mystore' %}
+         bg-[#D4BABA] text-[#2E1E1E] 
+       {% else %}
+         text-[#2E1E1E] hover:bg-[#d1b9b9] 
+       {% endif %}">
+      MyStore
+    </a>
   </div>
+</div>
+
 {% endblock %}

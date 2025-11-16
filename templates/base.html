@@ -7,28 +7,14 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100">
-    <header class="border-b border-slate-800">
-      <nav class="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
-        <div class="flex items-center gap-2">
-          <span class="text-xl font-bold tracking-tight">StyleMaxx</span>
-          <span class="text-xs text-slate-400">AI-powered style</span>
-        </div>
-        <div class="flex gap-4 text-sm">
-          <a href="{% url 'mystore' %}" class="hover:text-emerald-400 {% if request.resolver_match.url_name == 'mystore' %}text-emerald-400 font-semibold{% endif %}">
-            MyStore
-          </a>
-          <a href="{% url 'swipe' %}" class="hover:text-emerald-400 {% if request.resolver_match.url_name == 'swipe' %}text-emerald-400 font-semibold{% endif %}">
-            Swipe
-          </a>
-          <a href="{% url 'outfits' %}" class="hover:text-emerald-400 {% if request.resolver_match.url_name == 'outfits' %}text-emerald-400 font-semibold{% endif %}">
-            Outfits
-          </a>
-        </div>
-      </nav>
-    </header>
+  <body class="min-h-screen bg-[#DDCACA] text-slate-0">
+
 
     <main class="max-w-5xl mx-auto px-4 py-8">
+      <div class="fixed bottom-4 left-4">
+        <h1 style="font-size: 2.5rem; color: #272323;">Stylemaxx</h1>
+        <p style="color: #272323;">Welcome to Stylemaxx, your wardrobe assistant and personal stylist.</p>
+      </div>
       {% block content %}{% endblock %}
     </main>
   </body>

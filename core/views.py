@@ -44,7 +44,55 @@ def mystore_view(request):
     return render(request, 'core/mystore.html')
 
 def swipe_view(request):
-    return render(request, 'core/swipe.html')
+    outfits = load_outfits()
+    total = len(outfits)
+
+    # current index from session, default 0
+    idx = request.session.get("current_outfit_index", 0)
+
+    # Handle POST like/dislike
+    if request.method == "POST":
+        action = request.POST.get("action")
+        prefs = get_preferences(request.session)
+
+        # Apply preference update only if there is a current outfit
+        if 0 <= idx < total:
+            current_outfit = outfits[idx]
+            if action == "like":
+                prefs = update_preferences_with_outfit(prefs, current_outfit)
+                save_preferences(request.session, prefs)
+
+        # Move to next outfit
+        idx += 1
+        request.session["current_outfit_index"] = idx
+        request.session.modified = True
+
+        # Redirect to avoid form resubmission on refresh
+        return redirect("swipe")
+
+    # GET request: decide which outfit to show
+    if 0 <= idx < total:
+        outfit = outfits[idx]
+        done = False
+    else:
+        outfit = None
+        done = True
+
+    prefs = get_preferences(request.session)
+    top_keywords = sorted(
+        prefs["keywords"].items(),
+        key=lambda x: x[1],
+        reverse=True
+    )[:10]
+
+    context = {
+        "outfit": outfit,
+        "done": done,
+        "index": idx,
+        "total": total,
+        "top_keywords": top_keywords,
+    }
+    return render(request, 'core/swipe.html', context)
 
 def outfits_view(request):
     return render(request, 'core/outfits.html')
