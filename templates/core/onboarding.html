@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="max-w-md mx-auto">
+    <h1 class="text-2xl font-semibold mb-4">Welcome to StyleMaxx</h1>
+    <p class="text-slate-400 text-sm mb-6">
+      Tell us who you are so we can build your personal style model.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+
+      <div>
+        <label class="block text-sm font-medium mb-1" for="first_name">First name</label>
+        <input
+          type="text"
+          name="first_name"
+          id="first_name"
+          class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm outline-none focus:border-emerald-400"
+          placeholder="Alex"
+          required
+        />
+      </div>
+
+      <div>
+        <span class="block text-sm font-medium mb-1">Gender</span>
+        <div class="flex gap-4 text-sm">
+          <label class="inline-flex items-center gap-2">
+            <input type="radio" name="gender" value="male" checked />
+            <span>Male</span>
+          </label>
+          <label class="inline-flex items-center gap-2">
+            <input type="radio" name="gender" value="female" />
+            <span>Female</span>
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1" for="selfie">
+          Selfie (optional)
+        </label>
+        <p class="text-xs text-slate-500 mb-2">
+          If you upload a selfie, we'll use it as the base for your StyleMaxx model.
+          If you skip this, we'll use a default model with a similar look.
+        </p>
+        <input
+          type="file"
+          name="selfie"
+          id="selfie"
+          accept="image/*"
+          class="block w-full text-sm text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full mt-4 py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400"
+      >
+        Continue
+      </button>
+    </form>
+  </div>
+{% endblock %}

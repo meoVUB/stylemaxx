@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from pathlib import Path
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.utils.crypto import get_random_string
 import json
 
 # ========= Outfit data loader =========
@@ -38,6 +41,39 @@ def update_preferences_with_outfit(prefs, outfit):
     for kw in outfit.get("keywords", []):
         kw_counts[kw] = kw_counts.get(kw, 0) + 1
     return prefs
+
+# ======= Onboarding ========
+def onboarding_view(request):
+    if request.method == "POST":
+        first_name = request.POST.get("first_name", "").strip()
+        gender = request.POST.get("gender", "male")
+        selfie_file = request.FILES.get("selfie")
+
+        # store basic user info in session
+        request.session["user_first_name"] = first_name
+        request.session["user_gender"] = gender
+
+        if selfie_file:
+            # Save selfie under media/selfies/
+            filename = f"selfies/{get_random_string(12)}_{selfie_file.name}"
+            path = default_storage.save(filename, selfie_file)
+
+            # build URL: /media/selfies/...
+            model_image_url = settings.MEDIA_URL + filename.split("/", 1)[1]
+        else:
+            # No selfie → use default static image
+            if gender.lower() == "female":
+                model_image_url = "/static/models/default_female_model.png"
+            else:
+                model_image_url = "/static/models/default_male_model.png"
+
+        request.session["model_image_url"] = model_image_url
+        request.session.modified = True
+
+        # after onboarding, send them to Swipe or Outfits (up to you)
+        return redirect("swipe_dev")
+
+    return render(request, "core/onboarding.html")
 
 # ======= Production Views (= Parsa Styling) ========
 def mystore_view(request):
@@ -102,6 +138,10 @@ def mystore_view_dev(request):
     return render(request, 'sandbox/mystore_logic.html')
 
 def swipe_view_dev(request):
+    # If the user has not completed onboarding → redirect
+    if not request.session.get("model_image_url"):
+        return redirect("onboarding")
+    
     outfits = load_outfits()
     total = len(outfits)
 
@@ -153,4 +193,12 @@ def swipe_view_dev(request):
     return render(request, 'sandbox/swipe_logic.html', context)
 
 def outfits_view_dev(request):
-    return render(request, 'sandbox/outfits_logic.html')
+    model_image_url = request.session.get("model_image_url")
+    first_name = request.session.get("user_first_name", "")
+
+    context = {
+        "model_image_url": model_image_url,
+        "first_name": first_name,
+        # later: also pass selected outfit items here
+    }
+    return render(request, "sandbox/outfits_logic.html", context)
