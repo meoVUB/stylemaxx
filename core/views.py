@@ -539,7 +539,7 @@ def outfits_view(request):
             "outfit": None,
             "error": None,
         }
-        return render(request, "sandbox/outfits_logic.html", context)
+        return render(request, "core/outfits.html", context)
 
     # Score all products (no filtering on score > 0)
     scored = []
