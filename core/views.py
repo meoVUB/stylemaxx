@@ -71,7 +71,7 @@ def onboarding_view(request):
         request.session.modified = True
 
         # after onboarding, send them to Swipe or Outfits (up to you)
-        return redirect("swipe_dev")
+        return redirect("swipe")
 
     return render(request, "core/onboarding.html")
 
@@ -80,6 +80,10 @@ def mystore_view(request):
     return render(request, 'core/mystore.html')
 
 def swipe_view(request):
+     # If the user has not completed onboarding → redirect
+    if not request.session.get("model_image_url"):
+        return redirect("onboarding")
+
     outfits = load_outfits()
     total = len(outfits)
 
