@@ -3,14 +3,175 @@ from django.conf import settings
 from pathlib import Path
 from django.core.files.storage import default_storage
 from django.utils.crypto import get_random_string
+from openai import OpenAI
+import base64
 import json
 import requests
 import random
+import os
 
 _OUTFITS_CACHE = None
 _PRODUCTS_CACHE = None
 
+# ======= Nano Banana image gen ========
+def get_openai_client():
+    api_key = getattr(settings, "OPENAI_API_KEY", "") or os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        return None, "Missing OPENAI_API_KEY"
+    client = OpenAI(api_key=api_key)
+    return client, None
+
+def resolve_image_path_from_url(url: str | None) -> Path | None:
+    """
+    Turn a /media/... or /static/... URL into a filesystem path.
+    """
+    if not url:
+        return None
+
+    # media
+    media_prefix = settings.MEDIA_URL
+    if url.startswith(media_prefix):
+        rel = url[len(media_prefix):]
+        return Path(settings.MEDIA_ROOT) / rel
+
+    # static
+    static_prefix = "/static/"
+    if url.startswith(static_prefix):
+        rel = url[len(static_prefix):]
+        return Path(settings.BASE_DIR) / "static" / rel
+
+    return None
+
+def generate_tryon_image_with_openai(model_path: Path, clothing_paths: list[Path]):
+    """
+    Use OpenAI gpt-image-1 to apply clothing images to the base model.
+    Returns (media_url, error).
+    """
+    client, err = get_openai_client()
+    if err:
+        return None, err
+
+    prompt = (
+        "Use the first image as the full-body base model. "
+        "The other images are individual garments (tops or bottoms). "
+        "Keep the same person, pose, camera angle, lighting, and white background from the base model. "
+        "Replace the model's clothes with the garments shown in the other images so the outfit looks natural."
+    )
+
+    files = []
+    try:
+        # base model first
+        files.append(open(model_path, "rb"))
+        # then garments
+        for p in clothing_paths:
+            try:
+                files.append(open(p, "rb"))
+            except Exception:
+                continue
+
+        if len(files) <= 1:
+            return None, "No valid clothing images to apply."
+
+        result = client.images.edit(
+            model=getattr(settings, "OPENAI_IMAGE_MODEL", "gpt-image-1"),
+            image=files,        # list of images: [base, garment1, garment2, ...]
+            prompt=prompt,
+            n=1,
+            size="1024x1536",
+            quality="high",
+        )
+    except Exception as e:
+        msg = str(e)
+        if "permission" in msg.lower() or "verify" in msg.lower():
+            return None, "OpenAI image API not fully enabled (org verification / billing)."
+        if "quota" in msg.lower() or "rate limit" in msg.lower():
+            return None, "OpenAI image quota or rate limit hit; using base model only."
+        return None, f"OpenAI try-on generation error: {e}"
+    finally:
+        for f in files:
+            try:
+                f.close()
+            except Exception:
+                pass
+
+    try:
+        b64 = result.data[0].b64_json
+    except Exception as e:
+        return None, f"OpenAI image response format error: {e}"
+
+    image_bytes = base64.b64decode(b64)
+    filename = f"tryon/tryon_{get_random_string(12)}.png"
+    full_path = Path(settings.MEDIA_ROOT) / filename
+    full_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(full_path, "wb") as f:
+        f.write(image_bytes)
+
+    media_url = settings.MEDIA_URL + filename
+    return media_url, None
+
 # ======= Onboarding ========
+def generate_model_image_from_selfie(selfie_path: Path, gender: str):
+    """
+    Use OpenAI gpt-image-1 to turn the selfie into a clean full-body model.
+    Returns (media_url, error).
+    """
+    client, err = get_openai_client()
+    if err:
+        return None, err
+
+    g = (gender or "person").lower()
+    if g not in ("male", "female"):
+        g = "person"
+
+    prompt = (
+        f"Create a full-body studio photo of a young {g} fashion model based on this person. "
+        "Keep their general face, hairstyle and body type, but make them stand in a neutral pose, "
+        "wearing simple plain clothes (white t-shirt and neutral pants) on a clean white background. "
+        "Photorealistic, soft even lighting."
+    )
+
+    try:
+        img_file = open(selfie_path, "rb")
+    except Exception as e:
+        return None, f"Failed to open selfie image: {e}"
+
+    try:
+        result = client.images.edit(
+            model=getattr(settings, "OPENAI_IMAGE_MODEL", "gpt-image-1"),
+            image=[img_file],  # base image
+            prompt=prompt,
+            n=1,
+            size="1024x1536",  # portrait-ish
+            quality="high",
+        )
+    except Exception as e:
+        img_file.close()
+        msg = str(e)
+        # Nice message if you hit org/quotas
+        if "permission" in msg.lower() or "verify" in msg.lower():
+            return None, "OpenAI image API not fully enabled (org verification / billing)."
+        return None, f"OpenAI image edit error: {e}"
+    finally:
+        try:
+            img_file.close()
+        except Exception:
+            pass
+
+    try:
+        b64 = result.data[0].b64_json
+    except Exception as e:
+        return None, f"OpenAI image response format error: {e}"
+
+    image_bytes = base64.b64decode(b64)
+    filename = f"models/model_{get_random_string(12)}.png"
+    full_path = Path(settings.MEDIA_ROOT) / filename
+    full_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(full_path, "wb") as f:
+        f.write(image_bytes)
+
+    media_url = settings.MEDIA_URL + filename
+    return media_url, None
+
 def onboarding_view(request):
     if request.method == "POST":
         first_name = request.POST.get("first_name", "").strip()
@@ -22,12 +183,21 @@ def onboarding_view(request):
         request.session["user_gender"] = gender
 
         if selfie_file:
-            # Save selfie under media/selfies/
+            # 1) Save raw selfie
             filename = f"selfies/{get_random_string(12)}_{selfie_file.name}"
             path = default_storage.save(filename, selfie_file)
+            selfie_rel = filename.split("/", 1)[1]
+            selfie_fs_path = Path(settings.MEDIA_ROOT) / selfie_rel
 
-            # build URL: /media/selfies/...
-            model_image_url = settings.MEDIA_URL + filename.split("/", 1)[1]
+            # 2) Ask Gemini to create a clean model image
+            model_url, err = generate_model_image_from_selfie(selfie_fs_path, gender)
+            if model_url:
+                model_image_url = model_url
+            else:
+                # Fallback: use selfie directly if Gemini fails
+                model_image_url = settings.MEDIA_URL + selfie_rel
+                # Optionally stash error for dev
+                request.session["gemini_error"] = err
         else:
             # No selfie → use default static image
             if gender.lower() == "female":
@@ -534,7 +704,6 @@ def outfits_view_dev(request):
     prefs = get_preferences(request.session)
     kw_counts = prefs.get("keywords", {})
 
-    # Need preferences to generate meaningful outfit
     if not kw_counts:
         context = {
             "model_image_url": model_image_url,
@@ -542,24 +711,22 @@ def outfits_view_dev(request):
             "has_preferences": False,
             "outfit": None,
             "error": None,
+            "tryon_image_url": None,
         }
         return render(request, "sandbox/outfits_logic.html", context)
 
-    # Score all products (no filtering on score > 0)
+    # Score all products
     scored = []
     for p in products:
         score = sum(kw_counts.get(kw, 0) for kw in p.get("keywords", []))
         scored.append((score, p))
 
-    # Deterministic order: score desc, then name
     scored.sort(key=lambda sp: (-sp[0], sp[1]["name"]))
     relevant_products = [p for score, p in scored]
 
-    # Split into tops/bottoms based on category
     tops = [p for p in relevant_products if p.get("category") == "top"]
     bottoms = [p for p in relevant_products if p.get("category") == "bottom"]
 
-    # Last chosen IDs from previous outfit (for diversity)
     last_ids = request.session.get("last_outfit_ids") or {}
     last_top_id = last_ids.get("top_id")
     last_bottom_id = last_ids.get("bottom_id")
@@ -594,12 +761,50 @@ def outfits_view_dev(request):
         "currency": currency or "EUR",
     }
 
-    # Save current choice so next time we can forbid repeats
+    # Save current choice so Nosana doesn't repeat
     request.session["last_outfit_ids"] = {
         "top_id": top_id,
         "bottom_id": bottom_id,
     }
     request.session.modified = True
+
+    # --- Gemini try-on: only regenerate if outfit changed ---
+    prev_tryon = request.session.get("last_tryon") or {}
+    prev_top_id = prev_tryon.get("top_id")
+    prev_bottom_id = prev_tryon.get("bottom_id")
+    prev_image_url = prev_tryon.get("image_url")
+
+    tryon_image_url = prev_image_url
+
+    outfit_ids_changed = (top_id != prev_top_id) or (bottom_id != prev_bottom_id)
+
+    if outfit_ids_changed and outfit_products:
+        base_model_path = resolve_image_path_from_url(model_image_url)
+        clothing_paths = []
+
+        for p in outfit_products:
+            # clothing image is static/products/nano<ID>.png
+            nano_rel = f"products/nano{p['id']}.png"
+            nano_fs = Path(settings.BASE_DIR) / "static" / nano_rel
+            if nano_fs.exists():
+                clothing_paths.append(nano_fs)
+
+        if base_model_path and clothing_paths:
+            img_url, img_err = generate_tryon_image_with_openai(base_model_path, clothing_paths)
+            if img_url:
+                tryon_image_url = img_url
+                request.session["last_tryon"] = {
+                    "top_id": top_id,
+                    "bottom_id": bottom_id,
+                    "image_url": img_url,
+                }
+                request.session.modified = True
+            else:
+                if img_err:
+                    if error:
+                        error = error + " | " + img_err
+                    else:
+                        error = img_err
 
     context = {
         "model_image_url": model_image_url,
@@ -607,5 +812,6 @@ def outfits_view_dev(request):
         "has_preferences": True,
         "outfit": outfit,
         "error": error,
+        "tryon_image_url": tryon_image_url,
     }
     return render(request, "sandbox/outfits_logic.html", context)

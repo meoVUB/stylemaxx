@@ -26,9 +26,15 @@
     <!-- Left: model image / nano banana output -->
     <div class="border border-slate-800 rounded-xl p-4 flex flex-col items-center">
       <p class="text-slate-400 text-xs mb-2">
-        Your StyleMaxx model
+        {% if tryon_image_url %}Virtual try-on preview{% else %}Your StyleMaxx model{% endif %}
       </p>
-      {% if model_image_url %}
+      {% if tryon_image_url %}
+        <img
+          src="{{ tryon_image_url }}"
+          alt="Virtual try-on"
+          class="max-h-[460px] w-auto rounded-xl object-contain bg-slate-900"
+        />
+      {% elif model_image_url %}
         <img
           src="{{ model_image_url }}"
           alt="Your style model"

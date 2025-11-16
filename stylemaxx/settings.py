@@ -16,6 +16,9 @@ NOSANA_BASE_URL = os.environ.get("NOSANA_BASE_URL", "")
 NOSANA_MODEL_NAME = os.environ.get("NOSANA_MODEL_NAME", "")
 NOSANA_API_KEY = os.environ.get("NOSANA_API_KEY", "foo")
 
+OPENAI_API_KEY = "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"
+OPENAI_IMAGE_MODEL = "gpt-image-1"  # for now
+
 # for constructing selfie URLs (if deployed):
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
 
