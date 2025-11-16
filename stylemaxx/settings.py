@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-MIDAPI_API_KEY = os.environ.get("MIDAPI_API_KEY", "")
+NOSANA_BASE_URL = os.environ.get("NOSANA_BASE_URL", "")
+NOSANA_MODEL_NAME = os.environ.get("NOSANA_MODEL_NAME", "")
+NOSANA_API_KEY = os.environ.get("NOSANA_API_KEY", "foo")
 
 # for constructing selfie URLs (if deployed):
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")

@@ -1,15 +1,105 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
   <h1 class="text-2xl font-semibold mb-4">Outfits (DEV)</h1>
-  <p class="text-slate-400 mb-6">
-    This is the sandbox for the AI-generated outfits view (Nosana-powered).
-  </p>
+  {% if tops_count is not None %}
+    <p class="text-xs text-slate-500 mb-2">
+      Debug: {{ tops_count }} tops ({{ tops_ids|join:", " }}),
+      {{ bottoms_count }} bottoms ({{ bottoms_ids|join:", " }}).
+    </p>
+  {% endif %}
 
-  <button class="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400">
-    Generate Outfit (DEV)
-  </button>
+  {% if not has_preferences %}
+    <p class="text-slate-400 text-sm mb-4">
+      We don't know your style yet. Swipe a few outfits first, then come back here.
+    </p>
+  {% endif %}
 
-  <div class="mt-6 border border-dashed border-slate-700 rounded-xl p-6 text-sm text-slate-300">
-    TODO: show generated outfit and reasoning (sandbox).
+  {% if error %}
+    <p class="text-red-400 text-xs mb-4">
+      {{ error }}
+    </p>
+  {% endif %}
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <!-- Left: model image / nano banana output -->
+    <div class="border border-slate-800 rounded-xl p-4 flex flex-col items-center">
+      <p class="text-slate-400 text-xs mb-2">
+        Your StyleMaxx model
+      </p>
+      {% if model_image_url %}
+        <img
+          src="{{ model_image_url }}"
+          alt="Your style model"
+          class="max-h-[460px] w-auto rounded-xl object-contain bg-slate-900"
+        />
+      {% else %}
+        <p class="text-slate-500 text-sm">
+          No model yet. <a href="{% url 'onboarding' %}" class="text-emerald-400 underline">Create one here</a>.
+        </p>
+      {% endif %}
+    </div>
+
+    <!-- Right: outfit details -->
+    <div class="flex flex-col gap-4">
+      {% if outfit and outfit.items %}
+        <div>
+          <h2 class="text-lg font-semibold mb-1">
+            {{ outfit.name|default:"Your outfit" }}
+          </h2>
+          {% if outfit.style_notes %}
+            <p class="text-slate-400 text-sm mb-3">
+              {{ outfit.style_notes }}
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="space-y-3">
+          {% for item in outfit.items %}
+            <div class="flex gap-3 border border-slate-800 rounded-xl overflow-hidden">
+              <div class="w-24 bg-slate-800 shrink-0">
+                <img
+                  src="{% static item.static_path %}"
+                  alt="{{ item.name }}"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-3 flex flex-col justify-between text-sm">
+                <div>
+                  <p class="font-semibold">{{ item.name }}</p>
+                  <p class="text-xs text-slate-500">{{ item.shop }}</p>
+                </div>
+                <div class="flex items-center justify-between mt-2">
+                  <span class="text-emerald-400 font-semibold">
+                    {{ item.price }} {{ item.currency }}
+                  </span>
+                  <a
+                    href="{{ item.url }}"
+                    target="_blank"
+                    class="text-xs px-3 py-1 rounded-full bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400"
+                  >
+                    View item
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="mt-4 border-t border-slate-800 pt-3 flex items-center justify-between text-sm">
+          <span class="text-slate-400">Total outfit price</span>
+          <span class="text-emerald-400 font-semibold">
+            {{ outfit.total_price|floatformat:2 }} {{ outfit.currency }}
+          </span>
+        </div>
+
+      {% else %}
+        <p class="text-slate-500 text-sm">
+          No outfit generated yet. Make sure you've swiped some outfits in the
+          <a href="{% url 'swipe_dev' %}" class="text-emerald-400 underline">Swipe (DEV)</a> tab.
+        </p>
+      {% endif %}
+    </div>
   </div>
 {% endblock %}
