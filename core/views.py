@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from pathlib import Path
-from django.conf import settings
 from django.core.files.storage import default_storage
 from django.utils.crypto import get_random_string
 import json
 
-# ========= Outfit data loader =========
 _OUTFITS_CACHE = None
+_PRODUCTS_CACHE = None
 
+# ========= Outfit data loader =========
 def load_outfits():
     global _OUTFITS_CACHE
     if _OUTFITS_CACHE is None:
@@ -41,6 +41,24 @@ def update_preferences_with_outfit(prefs, outfit):
     for kw in outfit.get("keywords", []):
         kw_counts[kw] = kw_counts.get(kw, 0) + 1
     return prefs
+
+# ========= Product data loader =========
+def load_products():
+    """
+    Load products from core/data/streetwear_products_combined.json
+    and attach a static_path for each image.
+    """
+    global _PRODUCTS_CACHE
+    if _PRODUCTS_CACHE is None:
+        data_path = Path(settings.BASE_DIR) / "core" / "data" / "streetwear_products_combined.json"
+        with data_path.open(encoding="utf-8") as f:
+            products = json.load(f)
+
+        for p in products:
+            p["static_path"] = f"products/{p['id']}.png"
+
+        _PRODUCTS_CACHE = products
+    return _PRODUCTS_CACHE
 
 # ======= Onboarding ========
 def onboarding_view(request):
@@ -95,6 +113,12 @@ def swipe_view(request):
         action = request.POST.get("action")
         prefs = get_preferences(request.session)
 
+        if action == "reset":
+            request.session["current_outfit_index"] = 0
+            save_preferences(request.session, {"keywords": {}})
+            request.session.modified = True
+            return redirect("swipe_dev")
+
         # Apply preference update only if there is a current outfit
         if 0 <= idx < total:
             current_outfit = outfits[idx]
@@ -139,7 +163,29 @@ def outfits_view(request):
 
 # ======= Sandbox Views (= Mehmet Logic) ========
 def mystore_view_dev(request):
-    return render(request, 'sandbox/mystore_logic.html')
+    products = load_products()
+    prefs = get_preferences(request.session)
+    kw_counts = prefs.get("keywords", {})
+
+    if not kw_counts:
+        # No preferences yet → empty shop
+        top_products = []
+    else:
+        # score products by keyword overlap
+        scored = []
+        for p in products:
+            score = sum(kw_counts.get(kw, 0) for kw in p.get("keywords", []))
+            if score > 0:
+                scored.append((score, p))
+
+        scored.sort(key=lambda sp: (-sp[0], sp[1]["name"]))
+        top_products = [p for score, p in scored[:24]]
+
+    context = {
+        "products": top_products,
+        "has_preferences": bool(kw_counts),
+    }
+    return render(request, "sandbox/mystore_logic.html", context)
 
 def swipe_view_dev(request):
     # If the user has not completed onboarding → redirect
@@ -156,6 +202,12 @@ def swipe_view_dev(request):
     if request.method == "POST":
         action = request.POST.get("action")
         prefs = get_preferences(request.session)
+
+        if action == "reset":
+            request.session["current_outfit_index"] = 0
+            save_preferences(request.session, {"keywords": {}})
+            request.session.modified = True
+            return redirect("swipe_dev")
 
         # Apply preference update only if there is a current outfit
         if 0 <= idx < total:

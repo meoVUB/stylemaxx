@@ -1,0 +1,282 @@
+[
+  {
+    "id": "p001",
+    "name": "Urban Classics Heavy T-Shirt \u2013 black",
+    "price": 14.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/urban-classics-heavy-t-shirt-basic-black-ur622o074-q11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "tshirt",
+      "black",
+      "heavy",
+      "urban classics",
+      "streetwear",
+      "short sleeve"
+    ]
+  },
+  {
+    "id": "p002",
+    "name": "Urban Classics Heavy Oversized T-Shirt \u2013 bottlegreen",
+    "price": 14.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/urban-classics-heavy-oversized-t-shirt-basic-bottlegreen-ur622o074-m11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "tshirt",
+      "green",
+      "oversized",
+      "urban classics",
+      "streetwear",
+      "short sleeve"
+    ]
+  },
+  {
+    "id": "p003",
+    "name": "Urban Classics Oversized T-Shirt \u2013 asphalt",
+    "price": 14.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/urban-classics-oversized-t-shirt-basic-asphalt-ur622o074-c11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "tshirt",
+      "grey",
+      "oversized",
+      "urban classics",
+      "streetwear",
+      "short sleeve"
+    ]
+  },
+  {
+    "id": "p004",
+    "name": "Bershka Skater Relaxed Fit Jeans \u2013 black",
+    "price": 39.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/bershka-skater-relaxed-fit-jeans-black-bej22g0cv-q11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "jeans",
+      "black",
+      "skater",
+      "relaxed fit",
+      "bershka",
+      "pants"
+    ]
+  },
+  {
+    "id": "p005",
+    "name": "Bershka Balloon Fit Pants \u2013 dark grey",
+    "price": 35.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/bershka-balloon-fit-broek-dark-grey-bej22e0hg-c12.html",
+    "shop": "Zalando",
+    "keywords": [
+      "pants",
+      "dark grey",
+      "balloon fit",
+      "bershka",
+      "casual"
+    ]
+  },
+  {
+    "id": "p006",
+    "name": "Bershka Trainingsbroek \u2013 mottled dark grey",
+    "price": 29.99,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/bershka-trainingsbroek-mottled-dark-grey-bej22e0hg-c11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "pants",
+      "training",
+      "sweatpants",
+      "grey",
+      "bershka",
+      "casual"
+    ]
+  },
+  {
+    "id": "p007",
+    "name": "Relaxed Fit T-shirt \u2013 light beige",
+    "price": 9.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1309319008.html",
+    "shop": "H&M",
+    "keywords": [
+      "tshirt",
+      "light beige",
+      "relaxed fit",
+      "short sleeve",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p008",
+    "name": "Relaxed Fit T-shirt \u2013 black",
+    "price": 9.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1309319010.html",
+    "shop": "H&M",
+    "keywords": [
+      "tshirt",
+      "black",
+      "relaxed fit",
+      "short sleeve",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p009",
+    "name": "Oversized T-shirt \u2013 white",
+    "price": 14.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.0608945001.html",
+    "shop": "H&M",
+    "keywords": [
+      "tshirt",
+      "white",
+      "oversized",
+      "short sleeve",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p010",
+    "name": "Oversized Sweatshirt \u2013 black",
+    "price": 24.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1280809001.html",
+    "shop": "H&M",
+    "keywords": [
+      "sweatshirt",
+      "black",
+      "oversized",
+      "crewneck",
+      "casual"
+    ]
+  },
+  {
+    "id": "p011",
+    "name": "Oversized Sweatshirt \u2013 beige",
+    "price": 24.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1280809006.html",
+    "shop": "H&M",
+    "keywords": [
+      "sweatshirt",
+      "beige",
+      "oversized",
+      "crewneck",
+      "casual"
+    ]
+  },
+  {
+    "id": "p012",
+    "name": "Hoodie with Print \u2013 light grey",
+    "price": 29.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1288186004.html",
+    "shop": "H&M",
+    "keywords": [
+      "hoodie",
+      "light grey",
+      "print",
+      "casual",
+      "long sleeve"
+    ]
+  },
+  {
+    "id": "p013",
+    "name": "Relaxed Fit Hoodie \u2013 khaki green",
+    "price": 29.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1286499004.html",
+    "shop": "H&M",
+    "keywords": [
+      "hoodie",
+      "green",
+      "khaki",
+      "relaxed fit",
+      "casual",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p014",
+    "name": "Relaxed Fit Hoodie \u2013 beige",
+    "price": 29.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1287986002.html",
+    "shop": "H&M",
+    "keywords": [
+      "hoodie",
+      "beige",
+      "relaxed fit",
+      "casual",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p015",
+    "name": "Relaxed Fit Hoodie \u2013 light brown",
+    "price": 29.99,
+    "currency": "EUR",
+    "url": "https://www2.hm.com/nl_be/productpage.1283093004.html",
+    "shop": "H&M",
+    "keywords": [
+      "hoodie",
+      "light brown",
+      "relaxed fit",
+      "casual",
+      "streetwear"
+    ]
+  },
+  {
+    "id": "p016",
+    "name": "Carhartt WIP VISTA Longsleeve \u2013 mottled black",
+    "price": 59.95,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/carhartt-wip-vista-longsleeve-mottled-black-c1422o0g2-q11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "longsleeve",
+      "mottled black",
+      "cotton jersey",
+      "crew neck",
+      "Carhartt WIP",
+      "casual"
+    ]
+  },
+  {
+    "id": "p017",
+    "name": "Polo Ralph Lauren BI-SWING Windjack \u2013 black",
+    "price": 230.0,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/polo-ralph-lauren-swing-zomerjas-zwart-po222h000-q11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "windjack",
+      "black",
+      "zip\u2011front",
+      "Polo Ralph Lauren",
+      "light jacket",
+      "outerwear"
+    ]
+  },
+  {
+    "id": "p018",
+    "name": "Polo Ralph Lauren Whitman Relaxed Fit Pleated Chino Pant \u2013 washed classic khaki",
+    "price": 245.0,
+    "currency": "EUR",
+    "url": "https://www.zalando.be/polo-ralph-lauren-whitman-relaxed-fit-pleated-chino-pant-unisex-chino-washed-classic-khaki-po222e061-n11.html",
+    "shop": "Zalando",
+    "keywords": [
+      "chino",
+      "washed classic khaki",
+      "pleated",
+      "relaxed fit",
+      "cotton twill",
+      "Polo Ralph Lauren",
+      "pants"
+    ]
+  }
+]

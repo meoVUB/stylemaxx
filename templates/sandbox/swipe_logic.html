@@ -31,15 +31,13 @@
 
       <form method="post" action="{% url 'swipe_dev' %}">
         {% csrf_token %}
-        <!-- reset swipe session by going back to index 0 is a later enhancement -->
         <button
           type="submit"
           name="action"
           value="reset"
           class="mt-4 px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-sm hover:bg-slate-700"
-          disabled
         >
-          Reset (TODO)
+          Reset swipes & preferences
         </button>
       </form>
     </div>

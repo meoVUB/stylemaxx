@@ -1,11 +1,53 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
   <h1 class="text-2xl font-semibold mb-4">MyStore (DEV)</h1>
-  <p class="text-slate-400 mb-6">
-    This is the sandbox version of MyStore for wiring recommendation logic.
-  </p>
 
-  <div class="border border-dashed border-slate-700 rounded-xl p-6 text-sm text-slate-300">
-    TODO: show recommended products based on preferences (sandbox).
+  {% if not has_preferences %}
+    <p class="text-slate-400 mb-6 text-sm">
+      We don't know your style yet. These are generic picks from our catalog.
+      Swipe a few outfits to personalize results.
+    </p>
+  {% else %}
+    <p class="text-slate-400 mb-6 text-sm">
+      Curated for you based on your swipes.
+    </p>
+  {% endif %}
+
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    {% for product in products %}
+      <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden flex flex-col">
+        <div class="aspect-[3/4] bg-slate-800">
+          <img
+            src="{% static product.static_path %}"
+            alt="{{ product.name }}"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="p-4 flex flex-col gap-2 flex-1">
+          <div>
+            <h2 class="text-sm font-semibold">{{ product.name }}</h2>
+            <p class="text-xs text-slate-500">{{ product.shop }}</p>
+          </div>
+          <div class="mt-auto flex items-center justify-between">
+            <span class="text-emerald-400 font-semibold text-sm">
+              {{ product.price }} {{ product.currency }}
+            </span>
+            <a
+              href="{{ product.url }}"
+              target="_blank"
+              class="text-xs px-3 py-1 rounded-full bg-emerald-500 text-slate-950 font-semibold hover:bg-emerald-400"
+            >
+              View
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-slate-500 text-sm col-span-full">
+        No products in the catalog yet.
+      </p>
+    {% endfor %}
   </div>
 {% endblock %}
