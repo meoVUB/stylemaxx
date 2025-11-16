@@ -6,58 +6,56 @@
   <h1 class="text-2xl font-semibold mb-2 text-[#272323]">MyStore</h1>
 </div>
 
-<!-- Product Card Grid (Single item example, modular-ready) -->
-<div class="mt-4 flex justify-center">
-  <div class="bg-[#C29D9D] rounded-2xl p-4 w-full max-w-[12rem] shadow-lg flex flex-col items-start text-left space-y-2">
-    <div class="bg-white rounded-xl overflow-hidden w-full">
-      <img src="{% static 'images/MOGPIC.png' %}" alt="Product" class="w-full h-[10rem] object-cover" />
+{% if not has_preferences %}
+  <p class="text-[#5B3E3E] text-sm text-center mb-6">
+    We don't know your style yet. These are generic picks from our catalog.
+    Swipe a few outfits to personalize results.
+  </p>
+{% else %}
+  <p class="text-[#5B3E3E] text-sm text-center mb-6">
+    Curated for you based on your swipes.
+  </p>
+{% endif %}
+
+<!-- Product Grid -->
+<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+  {% for product in products %}
+    <div class="bg-[#C29D9D] rounded-2xl p-4 shadow-lg flex flex-col text-left border border-[#A88D8D]">
+
+      <!-- Product Image -->
+      <div class="bg-white rounded-xl overflow-hidden w-full aspect-[3/4]">
+        <img
+          src="{% static product.static_path %}"
+          alt="{{ product.name }}"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Name + Price -->
+      <div class="mt-3 space-y-1 w-full">
+        <p class="text-sm text-[#2E1E1E]">
+          <span class="font-semibold">{{ product.shop }}</span> {{ product.name }}
+        </p>
+        <p class="text-sm text-[#2E1E1E]">{{ product.price }} {{ product.currency }}</p>
+      </div>
+
+      <!-- Buy Now (Locked to Bottom Left) -->
+      <div class="mt-auto pt-3 w-full flex justify-start">
+        <a
+          href="{{ product.url }}"
+          target="_blank"
+          class="px-3 py-0.5 rounded-full bg-[#E3BDBD] text-[#2E1E1E] text-xs font-medium shadow hover:bg-[#dcb1b1]"
+        >
+          Buy Now
+        </a>
+      </div>
+
     </div>
-    <p class="text-sm text-[#2E1E1E]"><span class="font-semibold">Zalando</span> Baggy Pants</p>
-    <p class="text-sm text-[#2E1E1E]">$14</p>
-    <div class="flex gap-2">
-      <button
-      onclick="window.open('https://www.google.com', '_blank')"
-      class="px-3 py-0.5 rounded-full bg-[#E3BDBD] text-[#2E1E1E] text-xs font-medium shadow hover:bg-[#dcb1b1]">
-      Buy Now
-    </button>
-          <button class="px-3 py-0.5 rounded-full bg-[#A88D8D] text-white text-xs font-medium shadow hover:bg-[#947676]">Remove</button>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- Apple-style Tabs -->
-<div class="mt-8 flex justify-center">
-  <div class="inline-flex items-center bg-[#C29D9D] border border-[#A88D8D] rounded-full p-1 shadow-inner">
-    <a href="{% url 'swipe' %}"
-       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
-       {% if request.resolver_match.url_name == 'swipe' %}
-         bg-[#D4BABA] text-[#2E1E1E] 
-       {% else %}
-         text-[#2E1E1E] hover:bg-[#d1b9b9] 
-       {% endif %}">
-      Swipe
-    </a>
-    <a href="{% url 'outfits' %}"
-       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
-       {% if request.resolver_match.url_name == 'outfits' %}
-         bg-[#D4BABA] text-[#2E1E1E] 
-       {% else %}
-         text-[#2E1E1E] hover:bg-[#d1b9b9] 
-       {% endif %}">
-      Outfits
-    </a>
-    <a href="{% url 'mystore' %}"
-       class="px-4 py-1.5 text-sm rounded-full font-medium transition 
-       {% if request.resolver_match.url_name == 'mystore' %}
-         bg-[#D4BABA] text-[#2E1E1E] 
-       {% else %}
-         text-[#2E1E1E] hover:bg-[#d1b9b9] 
-       {% endif %}">
-      MyStore
-    </a>
-  </div>
+  {% empty %}
+    <p class="text-[#7D6E6E] text-sm col-span-full text-center">
+      No products in the catalog yet.
+    </p>
+  {% endfor %}
 </div>
 
 {% endblock %}

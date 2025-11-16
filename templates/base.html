@@ -16,6 +16,43 @@
         <p style="color: #272323;">Welcome to Stylemaxx, your wardrobe assistant and personal stylist.</p>
       </div>
       {% block content %}{% endblock %}
+      {% if request.resolver_match.url_name != 'onboarding' %}
+
+
+      <!-- NAVIGATION TABS-->
+      <div class="mt-8 flex justify-center">
+        <div class="inline-flex items-center bg-[#C29D9D] border border-[#A88D8D] rounded-full p-1 shadow-inner">
+          <a href="{% url 'swipe' %}"
+             class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+             {% if request.resolver_match.url_name == 'swipe' %}
+               bg-[#D4BABA] text-[#2E1E1E] 
+             {% else %}
+               text-[#2E1E1E] hover:bg-[#d1b9b9] 
+             {% endif %}">
+            Swipe
+          </a>
+          <a href="{% url 'outfits' %}"
+             class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+             {% if request.resolver_match.url_name == 'outfits' %}
+               bg-[#D4BABA] text-[#2E1E1E] 
+             {% else %}
+               text-[#2E1E1E] hover:bg-[#d1b9b9] 
+             {% endif %}">
+            Outfits
+          </a>
+          <a href="{% url 'mystore' %}"
+             class="px-4 py-1.5 text-sm rounded-full font-medium transition 
+             {% if request.resolver_match.url_name == 'mystore' %}
+               bg-[#D4BABA] text-[#2E1E1E] 
+             {% else %}
+               text-[#2E1E1E] hover:bg-[#d1b9b9] 
+             {% endif %}">
+            MyStore
+          </a>
+        </div>
+      </div>
+    {% endif %}
+    
     </main>
   </body>
 </html>

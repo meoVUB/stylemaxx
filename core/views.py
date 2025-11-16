@@ -95,7 +95,29 @@ def onboarding_view(request):
 
 # ======= Production Views (= Parsa Styling) ========
 def mystore_view(request):
-    return render(request, 'core/mystore.html')
+    products = load_products()
+    prefs = get_preferences(request.session)
+    kw_counts = prefs.get("keywords", {})
+
+    if not kw_counts:
+        # No preferences yet → empty shop
+        top_products = []
+    else:
+        # score products by keyword overlap
+        scored = []
+        for p in products:
+            score = sum(kw_counts.get(kw, 0) for kw in p.get("keywords", []))
+            if score > 0:
+                scored.append((score, p))
+
+        scored.sort(key=lambda sp: (-sp[0], sp[1]["name"]))
+        top_products = [p for score, p in scored[:24]]
+
+    context = {
+        "products": top_products,
+        "has_preferences": bool(kw_counts),
+    }
+    return render(request, "core/mystore.html", context)
 
 def swipe_view(request):
      # If the user has not completed onboarding → redirect
@@ -117,7 +139,7 @@ def swipe_view(request):
             request.session["current_outfit_index"] = 0
             save_preferences(request.session, {"keywords": {}})
             request.session.modified = True
-            return redirect("swipe_dev")
+            return redirect("swipe")
 
         # Apply preference update only if there is a current outfit
         if 0 <= idx < total:

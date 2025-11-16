@@ -1,100 +1,120 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-  <h1 class="text-2xl font-semibold mb-2">Swipe (DEV)</h1>
-  <p class="text-slate-400 mb-4 text-sm">
-    Developer sandbox for the Swipe logic.
-    Outfit {{ index|add:1 }} of {{ total }}.
+
+<div class="text-center mb-6">
+  <h1 class="text-2xl font-semibold mb-2 text-[#272323]">Swipe (DEV)</h1>
+  <p class="text-[#5B3E3E] text-sm">
+    Developer sandbox for swipe logic • Outfit {{ index|add:1 }} of {{ total }}
+  </p>
+</div>
+
+{% if done %}
+
+<div class="max-w-md mx-auto text-center space-y-4">
+
+  <p class="text-lg font-semibold text-[#2E1E1E]">
+    You're done swiping for now 🎉
   </p>
 
-  {% if done %}
-    <div class="max-w-md mx-auto text-center space-y-4">
-      <p class="text-lg font-semibold text-emerald-400">You're done swiping for now 🎉</p>
-      <p class="text-slate-400 text-sm">
-        Below is a preview of your learned style preferences (top keywords).
-      </p>
+  <p class="text-[#5B3E3E] text-sm">
+    Below is a preview of your learned style preferences (top keywords).
+  </p>
 
-      <div class="mt-4 border border-slate-800 rounded-xl p-4 text-left">
-        <h2 class="text-sm font-semibold text-slate-200 mb-2">Top keywords</h2>
-        {% if top_keywords %}
-          <div class="flex flex-wrap gap-2">
-            {% for kw, count in top_keywords %}
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-xs">
-                {{ kw }} <span class="ml-1 text-slate-500">×{{ count }}</span>
-              </span>
-            {% endfor %}
-          </div>
-        {% else %}
-          <p class="text-slate-500 text-sm">No preferences learned yet.</p>
-        {% endif %}
+  <div class="mt-4 border border-[#A88D8D] rounded-xl p-4 text-left bg-[#C29D9D]">
+    <h2 class="text-sm font-semibold text-[#2E1E1E] mb-2">Top keywords</h2>
+
+    {% if top_keywords %}
+      <div class="flex flex-wrap gap-2">
+        {% for kw, count in top_keywords %}
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#D4BABA] border border-[#A88D8D] text-xs text-[#2E1E1E]">
+            {{ kw }} <span class="ml-1 text-[#5B3E3E]">×{{ count }}</span>
+          </span>
+        {% endfor %}
       </div>
+    {% else %}
+      <p class="text-[#5B3E3E] text-sm">No preferences learned yet.</p>
+    {% endif %}
+  </div>
+
+  <form method="post" action="{% url 'swipe_dev' %}">
+    {% csrf_token %}
+    <button
+      type="submit"
+      name="action"
+      value="reset"
+      class="mt-4 px-4 py-2 rounded-full bg-[#C29D9D] border border-[#A88D8D] text-[#2E1E1E] text-sm hover:bg-[#d6bcbc]"
+    >
+      Reset swipes & preferences
+    </button>
+  </form>
+
+</div>
+
+{% else %}
+
+{% if outfit %}
+  <div class="max-w-md mx-auto">
+
+    <div class="bg-[#C29D9D] rounded-2xl shadow-xl overflow-hidden border border-[#A88D8D]">
+      <div class="aspect-[3/4] bg-[#B89F9F] flex items-center justify-center">
+        <img
+          src="{% static outfit.static_path %}"
+          alt="{{ outfit.id }}"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <div class="p-4 space-y-2 text-center">
+        <h2 class="text-lg font-semibold text-[#2E1E1E]">{{ outfit.id }}</h2>
+
+        <p class="text-xs uppercase tracking-wide text-[#5B3E3E]">
+          Keywords
+        </p>
+
+        <p class="text-sm text-[#2E1E1E]">
+          {% for kw in outfit.keywords %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#D4BABA] text-xs mr-1 mb-1">
+              {{ kw }}
+            </span>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+
+    <!-- Like / Dislike forms -->
+    <div class="mt-6 flex justify-center gap-8">
 
       <form method="post" action="{% url 'swipe_dev' %}">
         {% csrf_token %}
+        <input type="hidden" name="action" value="dislike">
         <button
           type="submit"
-          name="action"
-          value="reset"
-          class="mt-4 px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 text-sm hover:bg-slate-700"
+          class="h-16 w-16 flex items-center justify-center transition hover:scale-105"
         >
-          Reset swipes & preferences
+          <img src="{% static 'Icons/Trashcan.png' %}" alt="dislike" class="h-12 w-12 object-contain">
         </button>
       </form>
+
+      <form method="post" action="{% url 'swipe_dev' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="like">
+        <button
+          type="submit"
+          class="h-16 w-16 flex items-center justify-center transition hover:scale-105"
+        >
+          <img src="{% static 'Icons/Wardrobe.png' %}" alt="like" class="h-12 w-12 object-contain">
+        </button>
+      </form>
+
     </div>
 
-  {% else %}
+  </div>
 
-    {% if outfit %}
-      <div class="max-w-md mx-auto">
-        <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-800">
-          <div class="aspect-[3/4] bg-slate-800 flex items-center justify-center">
-            <img
-              src="{% static outfit.static_path %}"
-              alt="{{ outfit.id }}"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-4 space-y-2">
-            <h2 class="text-lg font-semibold">{{ outfit.id }}</h2>
-            <p class="text-xs uppercase tracking-wide text-slate-400">Keywords</p>
-            <p class="text-sm text-slate-300">
-              {% for kw in outfit.keywords %}
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-800 text-xs mr-1 mb-1">
-                  {{ kw }}
-                </span>
-              {% endfor %}
-            </p>
-          </div>
-        </div>
+{% else %}
+  <p class="text-[#7D6E6E] text-center">No outfit available.</p>
+{% endif %}
 
-        <!-- Like / Dislike forms -->
-        <div class="mt-6 flex justify-center gap-6">
-          <form method="post" action="{% url 'swipe_dev' %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="dislike">
-            <button
-              type="submit"
-              class="h-12 w-12 rounded-full bg-slate-900 border border-red-500/40 flex items-center justify-center text-red-400 text-xl hover:bg-red-500/10"
-            >
-              ✕
-            </button>
-          </form>
+{% endif %}
 
-          <form method="post" action="{% url 'swipe_dev' %}">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="like">
-            <button
-              type="submit"
-              class="h-14 w-14 rounded-full bg-emerald-500 text-slate-950 text-2xl shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
-            >
-              ❤
-            </button>
-          </form>
-        </div>
-      </div>
-    {% else %}
-      <p class="text-slate-400">No outfit available.</p>
-    {% endif %}
-
-  {% endif %}
 {% endblock %}
