@@ -16,8 +16,8 @@ NOSANA_BASE_URL = os.environ.get("NOSANA_BASE_URL", "")
 NOSANA_MODEL_NAME = os.environ.get("NOSANA_MODEL_NAME", "")
 NOSANA_API_KEY = os.environ.get("NOSANA_API_KEY", "foo")
 
-OPENAI_API_KEY = "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"
-OPENAI_IMAGE_MODEL = "gpt-image-1"  # for now
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_IMAGE_MODEL = "gpt-image-1"
 
 # for constructing selfie URLs (if deployed):
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
@@ -35,7 +35,7 @@ SECRET_KEY = "django-insecure-*i^s(wb#k1)-5@q87lv3t_ocsjbgd3nswxvp*=oto#hb9y3(fk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -126,8 +126,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
